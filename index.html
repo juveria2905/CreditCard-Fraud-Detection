@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>AI Fraud Detection</title>
+
+```
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(-45deg, #667eea, #764ba2, #6a11cb, #2575fc);
+        background-size: 400% 400%;
+        animation: gradientBG 12s ease infinite;
+        overflow-x: hidden;
+        color: white;
+    }
+
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .circle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+        animation: float 8s infinite ease-in-out;
+    }
+
+    .circle1 {
+        width: 200px;
+        height: 200px;
+        top: 10%;
+        left: 5%;
+    }
+
+    .circle2 {
+        width: 150px;
+        height: 150px;
+        bottom: 15%;
+        right: 10%;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-30px); }
+        100% { transform: translateY(0px); }
+    }
+
+    .main-card {
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        padding: 35px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    input {
+        background: rgba(255,255,255,0.15) !important;
+        border: none !important;
+        color: white !important;
+    }
+
+    input::placeholder {
+        color: #eee !important;
+    }
+
+    .btn-glow {
+        background: linear-gradient(to right, #ff512f, #dd2476);
+        border: none;
+        border-radius: 30px;
+        padding: 10px 30px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .btn-glow:hover {
+        transform: scale(1.08);
+        box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    }
+
+    .result-box {
+        padding: 18px;
+        border-radius: 15px;
+        font-weight: bold;
+        font-size: 20px;
+        animation: fadeIn 0.8s ease;
+    }
+
+    .safe {
+        background: rgba(40, 167, 69, 0.8);
+    }
+
+    .fraud {
+        background: rgba(220, 53, 69, 0.85);
+    }
+
+    .footer {
+        margin-top: 25px;
+        font-size: 14px;
+        opacity: 0.8;
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">✨ AI Credit Card Fraud Detection</h1>
+
+```
+<div class="main-card">
+
+    <form action="/predict" method="post" id="fraudForm">
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <input type="number" step="any" name="Time" class="form-control" placeholder="⏳ Transaction Time" required>
+            </div>
+            <div class="col-md-6">
+                <input type="number" step="any" name="Amount" class="form-control" placeholder="💰 Transaction Amount" required>
+            </div>
+        </div>
+
+        <hr style="color:white;">
+
+        <div class="row">
+            {% for i in range(1,29) %}
+            <div class="col-md-3 mb-2">
+                <input type="number" step="any" name="V{{i}}" class="form-control" placeholder="V{{i}}" required>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-glow me-2">🔍 Analyze</button>
+            <button type="button" class="btn btn-light" onclick="fillSample()">⚡ Auto Fill</button>
+        </div>
+
+    </form>
+
+    {% if prediction_text %}
+    <div class="mt-4 text-center">
+
+        {% if "Fraud" in prediction_text %}
+            <div class="result-box fraud">
+                🚨 {{ prediction_text }}
+            </div>
+        {% else %}
+            <div class="result-box safe">
+                🎉 {{ prediction_text }}
+            </div>
+        {% endif %}
+
+        <!-- ✅ FIXED LINE -->
+        {% if probability %}
+        <p class="mt-2">Fraud Probability: <strong>{{ probability }}%</strong></p>
+        {% endif %}
+
+    </div>
+    {% endif %}
+
+    <div class="footer text-center">
+        Built with ML | Flask | AWS Cloud
+    </div>
+
+</div>
+```
+
+</div>
+
+<script>
+function fillSample() {
+    const inputs = document.querySelectorAll("#fraudForm input");
+    inputs.forEach(input => {
+        input.value = (Math.random() * 2 - 1).toFixed(3);
+    });
+}
+</script>
+
+</body>
+</html>
